@@ -388,7 +388,12 @@ void ConfigQt::updateButtonText(int i)
 		if (!info->customText.isEmpty())
 			text = unescapeCustomText(info->customText);
 		else
+		{
 			text = QFileInfo(info->filename).baseName();
+			if (MultiFileHelper::IsMultipleFiles((info->filename).toStdString())) {
+				text += QString(" (...)");
+			}
+		}
 	}
 	else
 		text = "(no file)";
