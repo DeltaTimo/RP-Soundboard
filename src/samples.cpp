@@ -14,6 +14,7 @@
 #include "SoundInfo.h"
 #include "ts3log.h"
 #include "HighResClock.h"
+#include "MultiFileHelper.h"
 
 #include <queue>
 #include <vector>
@@ -462,7 +463,9 @@ bool Sampler::playSoundInternal( const SoundInfo &sound, bool preview )
 
 	m_inputFile = CreateInputFileFFmpeg();
 
-	if(m_inputFile->open(sound.filename.toUtf8(), sound.getStartTime(), sound.getPlayTime()) != 0)
+	std::string fileName = MultiFileHelper::RandomSoundFromDelimited(sound.filename.toStdString());
+
+	if(m_inputFile->open(fileName.c_str(), sound.getStartTime(), sound.getPlayTime()) != 0)
 	{
 		delete m_inputFile;
 		m_inputFile = NULL;
@@ -493,7 +496,7 @@ bool Sampler::playSoundInternal( const SoundInfo &sound, bool preview )
 
 	m_sampleProducerThread.setSource(m_inputFile);
 
-	emit onStartPlaying(preview, sound.filename);
+	emit onStartPlaying(preview, fileName.c_str());
 
 	return true;
 }
