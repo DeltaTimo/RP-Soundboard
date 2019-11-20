@@ -12,6 +12,7 @@
 #include <QtCore/QTimer>
 #include "soundview_qt.h"
 #include "SampleVisualizerThread.h"
+#include "MultiFileHelper.h"
 
 
 //---------------------------------------------------------------
@@ -87,7 +88,8 @@ void SoundView::setSound( const SoundInfo &sound )
 	m_drawnBins = 0;
 	if(filenameDiffers && !sound.filename.isEmpty())
 	{
-		SampleVisualizerThread::GetInstance().startAnalysis(sound.filename.toUtf8(), 1024);
+		std::string singleFileName = MultiFileHelper::RandomSoundFromDelimited(sound.filename.toStdString());
+		SampleVisualizerThread::GetInstance().startAnalysis(singleFileName.c_str(), 1024);
 		m_timer->start(250);
 	}
 	else
