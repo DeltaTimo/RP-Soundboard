@@ -19,6 +19,7 @@
 #include <QFileInfo>
 #include "config_qt.h"
 #include <QColorDialog>
+#include "MultiFileHelper.h"
 
 
 //---------------------------------------------------------------
@@ -145,9 +146,9 @@ void SoundSettingsQt::onVolumeChanged(int value)
 //---------------------------------------------------------------
 void SoundSettingsQt::onBrowsePressed()
 {
-	QString filePath = ui->filenameEdit->text();
+	std::string randomFile = MultiFileHelper::RandomSoundFromDelimited(ui->filenameEdit->text().toStdString());
 	// QString fn = QFileDialog::getOpenFileName(this, tr("Choose File"), filePath, tr("Files (*.*)"));
-	QStringList fns = QFileDialog::getOpenFileNames(this, tr("Choose File(s)"), filePath, tr("Files (*.*)"));
+	QStringList fns = QFileDialog::getOpenFileNames(this, tr("Choose File(s)"), QString(randomFile.c_str()), tr("Files (*.*)"));
 	std::string concatFileName;
 	QString fn;
 	int files = fns.size();

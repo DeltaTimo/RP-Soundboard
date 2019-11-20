@@ -26,6 +26,7 @@
 #include "ExpandableSection.h"
 #include "samples.h"
 #include "SoundButton.h"
+#include "MultiFileHelper.h"
 
 #ifdef _WIN32
 #include "Windows.h"
@@ -476,8 +477,8 @@ void ConfigQt::playSound( size_t buttonId )
 //---------------------------------------------------------------
 void ConfigQt::chooseFile( size_t buttonId )
 {
-	QString filePath = m_model->getFileName(buttonId);
-	QStringList fns = QFileDialog::getOpenFileNames(this, tr("Choose File(s)"), filePath, tr("Files (*.*)"));
+	std::string randomFile = MultiFileHelper::RandomSoundFromDelimited(m_model->getFileName(buttonId).toStdString());
+	QStringList fns = QFileDialog::getOpenFileNames(this, tr("Choose File(s)"), QString(randomFile.c_str()), tr("Files (*.*)"));
 	std::string concatFileName;
 	QString fn;
 	int files = fns.size();
