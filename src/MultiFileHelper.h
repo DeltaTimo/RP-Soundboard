@@ -17,7 +17,6 @@ namespace MultiFileHelper {
 		}
 		fileNames.push_back(delimitedString);
 		fileName = fileNames[std::rand() % fileNames.size()];
-		printf(fileName.c_str()); // TODO: Remove
 
 		return fileName;
 	}
