@@ -69,7 +69,7 @@ ConfigQt::ConfigQt( ConfigModel *model, QWidget *parent /*= 0*/ ) :
     configsSection->setContentLayout(*ui->configsWidget->layout());
     layout()->addWidget(configsSection);
 
-    QAction *actChooseFile = new QAction("Choose File", this);
+    QAction *actChooseFile = new QAction("Choose File(s)", this);
 	actChooseFile->setData((int)BC_CHOOSE);
 	m_buttonContextMenu.addAction(actChooseFile);
 
@@ -477,7 +477,22 @@ void ConfigQt::playSound( size_t buttonId )
 void ConfigQt::chooseFile( size_t buttonId )
 {
 	QString filePath = m_model->getFileName(buttonId);
-	QString fn = QFileDialog::getOpenFileName(this, tr("Choose File"), filePath, tr("Files (*.*)"));
+	QStringList fns = QFileDialog::getOpenFileNames(this, tr("Choose File(s)"), filePath, tr("Files (*.*)"));
+	std::string concatFileName;
+	QString fn;
+	int files = fns.size();
+	if (files > 0) {
+		int i = 0;
+		for each (QString fileName in fns)
+		{
+			concatFileName.append(fileName.toStdString());
+			if (i < files - 1) {
+				concatFileName.append(";");
+			}
+			++i;
+		}
+		fn = QString::fromStdString(concatFileName);
+	}
 	if (fn.isNull())
 		return;
 	setButtonFile(buttonId, fn);

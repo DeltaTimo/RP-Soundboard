@@ -146,7 +146,23 @@ void SoundSettingsQt::onVolumeChanged(int value)
 void SoundSettingsQt::onBrowsePressed()
 {
 	QString filePath = ui->filenameEdit->text();
-	QString fn = QFileDialog::getOpenFileName(this, tr("Choose File"), filePath, tr("Files (*.*)"));
+	// QString fn = QFileDialog::getOpenFileName(this, tr("Choose File"), filePath, tr("Files (*.*)"));
+	QStringList fns = QFileDialog::getOpenFileNames(this, tr("Choose File(s)"), filePath, tr("Files (*.*)"));
+	std::string concatFileName;
+	QString fn;
+	int files = fns.size();
+	if (files > 0) {
+		int i = 0;
+		for each (QString fileName in fns)
+		{
+			concatFileName.append(fileName.toStdString());
+			if (i < files-1) {
+				concatFileName.append(";");
+			}
+			++i;
+		}
+		fn = QString::fromStdString(concatFileName);
+	}
 	if(!fn.isNull())
 	{
 		ui->filenameEdit->setText(fn);
