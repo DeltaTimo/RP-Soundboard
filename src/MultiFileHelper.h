@@ -6,6 +6,9 @@
 #include <vector>
 
 namespace MultiFileHelper {
+	extern inline bool IsMultipleFiles(const std::string& str) {
+		return str.find(";") != std::string::npos;
+	}
 
 	extern inline std::string RandomSoundFromDelimited(std::string delimitedString) {
 		std::string fileName;
