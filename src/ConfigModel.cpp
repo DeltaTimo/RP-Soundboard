@@ -166,7 +166,7 @@ int ConfigModel::getConfiguration()
 QString ConfigModel::getFileName( int itemId ) const
 {
     if(itemId >= 0 && itemId < numSounds())
-		return sounds()[itemId].filename;
+		return sounds()[itemId].getFilename();
 	return QString();
 }
 
@@ -180,7 +180,7 @@ void ConfigModel::setFileName( int itemId, const QString &fn )
 	{
         if(itemId < 1000 && itemId >= numSounds())
 			sounds().resize(itemId + 1);
-		sounds()[itemId].filename = fn;
+		sounds()[itemId].setFilename(fn);
 		writeConfig();
 		notify(NOTIFY_SET_SOUND, itemId);
 	}
@@ -442,7 +442,7 @@ std::vector<SoundInfo> ConfigModel::getInitialSounds()
 	for (int i = 0; files[i] != NULL; i++)
 	{
 		SoundInfo info;
-		info.filename = fullPath + files[i];
+		info.setFilename(fullPath + files[i]);
 		sounds.push_back(info);
 	}
 	return sounds;

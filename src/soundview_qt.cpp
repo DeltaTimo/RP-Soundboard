@@ -83,12 +83,12 @@ void SoundView::resizeEvent(QResizeEvent *evt)
 //---------------------------------------------------------------
 void SoundView::setSound( const SoundInfo &sound )
 {
-	bool filenameDiffers = m_soundInfo.filename != sound.filename;
+	bool filenameDiffers = m_soundInfo.getFilename() != sound.getFilename();
 	m_soundInfo = sound;
 	m_drawnBins = 0;
-	if(filenameDiffers && !sound.filename.isEmpty())
+	if(filenameDiffers && !sound.isEmpty())
 	{
-		std::string singleFileName = MultiFileHelper::RandomSoundFromDelimited(sound.filename.toStdString());
+		std::string singleFileName = MultiFileHelper::RandomSoundFromDelimited(sound.getFilename().toStdString());
 		SampleVisualizerThread::GetInstance().startAnalysis(singleFileName.c_str(), 1024);
 		m_timer->start(250);
 	}

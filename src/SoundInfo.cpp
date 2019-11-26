@@ -8,6 +8,7 @@
 
 
 #include "SoundInfo.h"
+#include "MultiFileHelper.h"
 
 #define NAME_PATH "path"
 #define NAME_CUSTOM_TEXT "customText"
@@ -49,7 +50,7 @@ QString colorToString(const QColor &col)
 // Purpose: 
 //---------------------------------------------------------------
 SoundInfo::SoundInfo() :
-	filename(DEFAULT_PATH),
+	//filename(DEFAULT_PATH),
 	customText(DEFAULT_CUSTOM_TEXT),
 	customColor(stringToColor(DEFAULT_CUSTOM_COLOR)),
 	volume(DEFAULT_VOLUME),
@@ -69,7 +70,7 @@ SoundInfo::SoundInfo() :
 //---------------------------------------------------------------
 void SoundInfo::readFromConfig( const QSettings &settings )
 {
-	filename = settings.value(NAME_PATH, DEFAULT_PATH).toString();
+	filenames = MultiFileHelper::QListFromDelimited(settings.value(NAME_PATH, DEFAULT_PATH).toString());
 	customText = settings.value(NAME_CUSTOM_TEXT, DEFAULT_CUSTOM_TEXT).toString();
 	customColor = stringToColor(settings.value(NAME_CUSTOM_COLOR, DEFAULT_CUSTOM_COLOR).toString());
 	volume = settings.value(NAME_VOLUME, DEFAULT_VOLUME).toInt();
@@ -87,7 +88,7 @@ void SoundInfo::readFromConfig( const QSettings &settings )
 //---------------------------------------------------------------
 void SoundInfo::saveToConfig( QSettings &settings ) const
 {
-	settings.setValue(NAME_PATH, filename);
+	settings.setValue(NAME_PATH, MultiFileHelper::QDelimitedFromList(filenames));
 	settings.setValue(NAME_CUSTOM_TEXT, customText);
 	settings.setValue(NAME_CUSTOM_COLOR, colorToString(customColor));
 	settings.setValue(NAME_VOLUME, volume);

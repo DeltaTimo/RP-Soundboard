@@ -383,14 +383,14 @@ void ConfigQt::updateButtonText(int i)
 
 	QString text;
 	const SoundInfo *info = m_model->getSoundInfo(i);
-	if (info && !info->filename.isEmpty())
+	if (info && !info->isEmpty())
 	{
 		if (!info->customText.isEmpty())
 			text = unescapeCustomText(info->customText);
 		else
 		{
-			text = QFileInfo(info->filename).baseName();
-			if (MultiFileHelper::IsMultipleFiles((info->filename).toStdString())) {
+			text = QFileInfo(info->getFilename()).baseName();
+			if (info->isMultiple()) {
 				text += QString(" (...)");
 			}
 		}
@@ -880,7 +880,7 @@ void ConfigQt::onButtonFileDropped(const QList<QUrl> &urls)
 void ConfigQt::setButtonFile(size_t buttonId, const QString &fn, bool askForDisablingCrop)
 {
 	const SoundInfo *info = m_model->getSoundInfo(buttonId);
-	if (askForDisablingCrop && info && info->cropEnabled && info->filename != fn)
+	if (askForDisablingCrop && info && info->cropEnabled && info->getFilename() != fn)
 	{
 		QMessageBox mb(QMessageBox::Question, "Keep crop settings?",
 			"You selected a new file for a button that has 'crop sound' enabled.", QMessageBox::NoButton, this);
@@ -961,7 +961,7 @@ void ConfigQt::onFilterEditTextChanged(const QString &text)
 	{
 		int buttonId = button->property("buttonId").toInt();
 		const SoundInfo *info = m_model->getSoundInfo(buttonId);
-		bool hasFile = info && !info->filename.isEmpty();
+		bool hasFile = info && !info->isEmpty();
 		QString buttonText = button->text();
 		bool pass = filter.length() == 0 || (hasFile && buttonText.contains(filter, Qt::CaseInsensitive));
 		button->setVisible(pass);

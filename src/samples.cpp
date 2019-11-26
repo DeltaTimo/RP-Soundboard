@@ -463,7 +463,7 @@ bool Sampler::playSoundInternal( const SoundInfo &sound, bool preview )
 
 	m_inputFile = CreateInputFileFFmpeg();
 
-	std::string fileName = MultiFileHelper::RandomSoundFromDelimited(sound.filename.toStdString());
+	std::string fileName = sound.randomSound().toStdString();
 
 	if(m_inputFile->open(fileName.c_str(), sound.getStartTime(), sound.getPlayTime()) != 0)
 	{
